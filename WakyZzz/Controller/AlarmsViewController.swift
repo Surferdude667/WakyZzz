@@ -20,48 +20,19 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         config()
     }
     
     func config() {
-        
         tableView.delegate = self
         tableView.dataSource = self
-        
-        populateAlarms()
-        
     }
     
-    func populateAlarms() {
-        
-        var alarm: Alarm
-        
-        // Weekdays 5am
-        alarm = Alarm()
-        alarm.time = 5 * 3600
-        for i in 1 ... 5 {
-            alarm.repeatDays[i] = true
-        }
-        alarms.append(alarm)
-        
-        // Weekend 9am
-        alarm = Alarm()
-        alarm.time = 9 * 3600
-        alarm.enabled = false
-        alarm.repeatDays[0] = true
-        alarm.repeatDays[6] = true
-        alarms.append(alarm)
-    }
+    func numberOfSections(in tableView: UITableView) -> Int { 1 }
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return alarms.count
-    }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { alarms.count }
 
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AlarmCell", for: indexPath) as! AlarmTableViewCell
         cell.delegate = self
@@ -89,7 +60,7 @@ class AlarmsViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func deleteAlarm(at indexPath: IndexPath) {
         tableView.beginUpdates()
-        alarms.remove(at: alarms.count)
+        alarms.remove(at: alarms.count - 1)
         tableView.deleteRows(at: [indexPath], with: .automatic)
         tableView.endUpdates()
     }

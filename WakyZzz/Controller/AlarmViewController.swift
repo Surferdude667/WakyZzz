@@ -6,7 +6,6 @@
 //  Copyright © 2018 Olga Volkova OC. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
 protocol AlarmViewControllerDelegate {
@@ -18,30 +17,31 @@ class AlarmViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var tableView: UITableView!
+    
     var alarm: Alarm?
     
     var delegate: AlarmViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         config()
     }
     
-    func config() {        
+    func config() {
         if alarm == nil {
             navigationItem.title = "New Alarm"
             alarm = Alarm()
-        }
-        else {
+            datePicker.setDate(alarm!.defaultTime(), animated: false)
+            alarm?.setTime(date: datePicker.date)
+        } else {
+            datePicker.date = (alarm?.alarmDate)!
             navigationItem.title = "Edit Alarm"
         }
         
         tableView.delegate = self
         tableView.dataSource = self
-        
-        datePicker.date = (alarm?.alarmDate)!
     }
+    
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -55,9 +55,11 @@ class AlarmViewController: UIViewController, UITableViewDelegate, UITableViewDat
         let cell = tableView.dequeueReusableCell(withIdentifier: "DayOfWeekCell", for: indexPath)
         cell.textLabel?.text = Alarm.daysOfWeek[indexPath.row]
         cell.accessoryType = (alarm?.repeatDays[indexPath.row])! ? .checkmark : .none
+        
         if (alarm?.repeatDays[indexPath.row])! {
             tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
         }
+        
         return cell
     }
     
@@ -75,6 +77,8 @@ class AlarmViewController: UIViewController, UITableViewDelegate, UITableViewDat
         tableView.cellForRow(at: indexPath)?.accessoryType = (alarm?.repeatDays[indexPath.row])! ? .checkmark : .none
     }
     
+    // MARK:- Actions
+    
     @IBAction func cancelButtonPress(_ sender: Any) {
         presentingViewController?.dismiss(animated: true, completion: nil)
     }
@@ -83,6 +87,7 @@ class AlarmViewController: UIViewController, UITableViewDelegate, UITableViewDat
         delegate?.alarmViewControllerDone(alarm: alarm!)
         presentingViewController?.dismiss(animated: true, completion: nil)
     }
+    
     @IBAction func datePickerValueChanged(_ sender: Any) {
         alarm?.setTime(date: datePicker.date)
     }

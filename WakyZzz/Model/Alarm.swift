@@ -12,15 +12,16 @@ class Alarm {
     
     static let daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     
-    var time = 8 * 360
+    var time = 0
+    
     var repeatDays = [false, false, false, false, false, false, false]
     var enabled = true
     
     var alarmDate: Date? {
         let date = Date()
         let calendar = Calendar.current
-        let h = time/3600
-        let m = time/60 - h * 60
+        let h = time / 3600
+        let m = time / 60 - h * 60
         
         var components = calendar.dateComponents([.hour, .minute, .month, .year, .day, .second, .weekOfMonth], from: date as Date)
         
@@ -49,9 +50,18 @@ class Alarm {
     
     func setTime(date: Date) {
         let calendar = Calendar.current
-        var components = calendar.dateComponents([.hour, .minute, .month, .year, .day, .second, .weekOfMonth], from: date as Date)
+        let components = calendar.dateComponents([.hour, .minute, .month, .year, .day, .second, .weekOfMonth], from: date as Date)
         
         time = components.hour! * 3600 + components.minute! * 60        
     }
-
+    
+    func defaultTime() -> Date {
+        let calender = Calendar.current
+        var dateComponent = DateComponents()
+        dateComponent.hour = 08
+        dateComponent.minute = 00
+        
+        return calender.date(from: dateComponent)!
+    }
+    
 }

@@ -6,7 +6,6 @@
 //  Copyright © 2018 Olga Volkova OC. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
 protocol AlarmCellDelegate {
@@ -22,9 +21,7 @@ class AlarmTableViewCell: UITableViewCell {
     var delegate: AlarmCellDelegate?
     
     override func awakeFromNib() {
-        
         super.awakeFromNib()
-        
         configure()
     }
     
