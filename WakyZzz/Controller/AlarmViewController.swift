@@ -13,7 +13,7 @@ protocol AlarmViewControllerDelegate {
     func alarmViewControllerCancel()
 }
 
-class AlarmViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class AlarmViewController: UIViewController {
     
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var tableView: UITableView!
@@ -24,10 +24,10 @@ class AlarmViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        config()
+        configure()
     }
     
-    func config() {
+    func configure() {
         if alarm == nil {
             navigationItem.title = "New Alarm"
             alarm = Alarm()
@@ -43,40 +43,6 @@ class AlarmViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Alarm.daysOfWeek.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "DayOfWeekCell", for: indexPath)
-        cell.textLabel?.text = Alarm.daysOfWeek[indexPath.row]
-        cell.accessoryType = (alarm?.repeatDays[indexPath.row])! ? .checkmark : .none
-        
-        if (alarm?.repeatDays[indexPath.row])! {
-            tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-        }
-        
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Repeat on following weekdays"
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        alarm?.repeatDays[indexPath.row] = true
-        tableView.cellForRow(at: indexPath)?.accessoryType = (alarm?.repeatDays[indexPath.row])! ? .checkmark : .none
-    }
-    
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        alarm?.repeatDays[indexPath.row] = false
-        tableView.cellForRow(at: indexPath)?.accessoryType = (alarm?.repeatDays[indexPath.row])! ? .checkmark : .none
-    }
-    
     // MARK:- Actions
     
     @IBAction func cancelButtonPress(_ sender: Any) {
@@ -90,6 +56,40 @@ class AlarmViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     @IBAction func datePickerValueChanged(_ sender: Any) {
         alarm?.setTime(date: datePicker.date)
+    }
+    
+}
+
+
+extension AlarmViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        alarm?.repeatDays[indexPath.row] = true
+        tableView.cellForRow(at: indexPath)?.accessoryType = (alarm?.repeatDays[indexPath.row])! ? .checkmark : .none
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        alarm?.repeatDays[indexPath.row] = false
+        tableView.cellForRow(at: indexPath)?.accessoryType = (alarm?.repeatDays[indexPath.row])! ? .checkmark : .none
+    }
+}
+
+
+extension AlarmViewController: UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int { 1 }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { Alarm.daysOfWeek.count }
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? { "Repeat on following weekdays" }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "DayOfWeekCell", for: indexPath)
+        cell.textLabel?.text = Alarm.daysOfWeek[indexPath.row]
+        cell.accessoryType = (alarm?.repeatDays[indexPath.row])! ? .checkmark : .none
+        
+        if (alarm?.repeatDays[indexPath.row])! {
+            tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+        }
+        
+        return cell
     }
     
 }
