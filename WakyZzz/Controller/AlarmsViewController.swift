@@ -54,14 +54,7 @@ class AlarmsViewController: UIViewController {
         tableView.reloadData()
     }
     
-    
-    // TODO: There is function for this in the UITableViewDataSoruce (TO actually move the cell).
-    func moveAlarm(from originalIndextPath: IndexPath, to targetIndexPath: IndexPath) {
-        let alarm = alarms.remove(at: originalIndextPath.row)
-        alarms.insert(alarm, at: targetIndexPath.row)
-        tableView.reloadData()
-    }
-    
+    // TODO: If there is time, this whole implementation is outdated. The new default way of presenting a page sheet is now the default.
     func presentAlarmViewController(alarm: Alarm?) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let popupViewController = storyboard.instantiateViewController(withIdentifier: "DetailNavigationController") as! UINavigationController
@@ -136,8 +129,6 @@ extension AlarmsViewController: AlarmViewControllerDelegate {
     
     func alarmViewControllerCancel() {
         editingIndexPath = nil
-
-        
     }
     
 }
