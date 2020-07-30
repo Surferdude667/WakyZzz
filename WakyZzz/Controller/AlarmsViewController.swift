@@ -48,13 +48,19 @@ class AlarmsViewController: UIViewController {
         tableView.endUpdates()
     }
     
+    func sortAlarms(alarms: [Alarm]) {
+        let sorted = alarms.sorted(by: { $0.time < $1.time })
+        self.alarms = sorted
+        tableView.reloadData()
+    }
+    
+    
     // TODO: There is function for this in the UITableViewDataSoruce (TO actually move the cell).
     func moveAlarm(from originalIndextPath: IndexPath, to targetIndexPath: IndexPath) {
         let alarm = alarms.remove(at: originalIndextPath.row)
         alarms.insert(alarm, at: targetIndexPath.row)
         tableView.reloadData()
     }
-    
     
     func presentAlarmViewController(alarm: Alarm?) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -125,10 +131,13 @@ extension AlarmsViewController: AlarmViewControllerDelegate {
             addAlarm(alarm, at: IndexPath(row: alarms.count, section: 0))
         }
         editingIndexPath = nil
+        sortAlarms(alarms: alarms)
     }
     
     func alarmViewControllerCancel() {
         editingIndexPath = nil
+
+        
     }
     
 }

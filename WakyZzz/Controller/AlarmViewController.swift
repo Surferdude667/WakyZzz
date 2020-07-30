@@ -46,6 +46,7 @@ class AlarmViewController: UIViewController {
     // MARK:- Actions
     
     @IBAction func cancelButtonPress(_ sender: Any) {
+        delegate?.alarmViewControllerCancel()
         presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
@@ -61,6 +62,7 @@ class AlarmViewController: UIViewController {
 }
 
 
+// MARK:- UITableViewDelegate
 extension AlarmViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         alarm?.repeatDays[indexPath.row] = true
@@ -73,7 +75,7 @@ extension AlarmViewController: UITableViewDelegate {
     }
 }
 
-
+// MARK:- UITableViewDataSource
 extension AlarmViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int { 1 }

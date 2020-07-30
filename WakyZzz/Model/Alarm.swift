@@ -8,8 +8,8 @@
 
 import Foundation 
 
-class Alarm { 
-    
+class Alarm {
+
     static let daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     
     var time = 0
