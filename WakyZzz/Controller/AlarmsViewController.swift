@@ -107,6 +107,7 @@ extension AlarmsViewController: AlarmCellDelegate {
     func alarmCell(_ cell: AlarmTableViewCell, enabledChanged enabled: Bool) {
         if let indexPath = tableView.indexPath(for: cell) {
             if let alarm = self.alarm(at: indexPath) {
+                print("Called at indexPath: \(indexPath): \(enabled)")
                 alarm.enabled = enabled
             }
         }

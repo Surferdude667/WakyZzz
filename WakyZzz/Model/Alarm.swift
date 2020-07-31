@@ -13,7 +13,6 @@ class Alarm {
     static let daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     
     var time = 0
-    
     var repeatDays = [false, false, false, false, false, false, false]
     var enabled = true
     

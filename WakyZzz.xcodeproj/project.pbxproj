@@ -17,7 +17,6 @@
 		0424EB6D20BF022900E15E46 /* AlarmTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0424EB6C20BF022900E15E46 /* AlarmTableViewCell.swift */; };
 		0424EB6F20BF0FAE00E15E46 /* AlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0424EB6E20BF0FAE00E15E46 /* AlarmViewController.swift */; };
 		0424EB7120C038AE00E15E46 /* sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0424EB7020C038AE00E15E46 /* sound.mp3 */; };
-		F622968A24D1701E00882BEF /* WakyZzzTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F622968924D1701E00882BEF /* WakyZzzTests.swift */; };
 		F622969224D1708100882BEF /* AlarmTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F622969124D1708100882BEF /* AlarmTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -45,7 +44,6 @@
 		0424EB6E20BF0FAE00E15E46 /* AlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmViewController.swift; sourceTree = "<group>"; };
 		0424EB7020C038AE00E15E46 /* sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sound.mp3; sourceTree = "<group>"; };
 		F622968724D1701E00882BEF /* WakyZzzTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WakyZzzTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F622968924D1701E00882BEF /* WakyZzzTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WakyZzzTests.swift; sourceTree = "<group>"; };
 		F622968B24D1701E00882BEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F622969124D1708100882BEF /* AlarmTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -104,9 +102,8 @@
 		F622968824D1701E00882BEF /* WakyZzzTests */ = {
 			isa = PBXGroup;
 			children = (
-				F622968924D1701E00882BEF /* WakyZzzTests.swift */,
-				F622968B24D1701E00882BEF /* Info.plist */,
 				F622969124D1708100882BEF /* AlarmTests.swift */,
+				F622968B24D1701E00882BEF /* Info.plist */,
 			);
 			path = WakyZzzTests;
 			sourceTree = "<group>";
@@ -270,7 +267,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F622968A24D1701E00882BEF /* WakyZzzTests.swift in Sources */,
 				F622969224D1708100882BEF /* AlarmTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
