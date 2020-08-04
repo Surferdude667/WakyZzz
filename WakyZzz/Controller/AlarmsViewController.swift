@@ -11,6 +11,7 @@ import UIKit
 class AlarmsViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
+    let userNotificationCenter = UNUserNotificationCenter.current()
     
     var alarms = [Alarm]()
     var editingIndexPath: IndexPath?
@@ -23,6 +24,8 @@ class AlarmsViewController: UIViewController {
     func configure() {
         tableView.delegate = self
         tableView.dataSource = self
+        userNotificationCenter.delegate = self
+        requestNotificationAuthorization()
     }
     
     func alarm(at indexPath: IndexPath) -> Alarm? {
@@ -46,6 +49,22 @@ class AlarmsViewController: UIViewController {
         alarms.insert(alarm, at: indexPath.row)
         tableView.insertRows(at: [indexPath], with: .automatic)
         tableView.endUpdates()
+        scheduleAlarm(alarm: alarm)
+    }
+    
+    func requestNotificationAuthorization() {
+        let authOptions = UNAuthorizationOptions.init(arrayLiteral: .alert, .badge, .sound)
+        
+        self.userNotificationCenter.requestAuthorization(options: authOptions) { (success, error) in
+            if let error = error {
+                print("Error: ", error)
+            }
+        }
+    }
+    
+    func scheduleAlarm(alarm: Alarm) {
+        let scheduler = AlarmScheduler(alarm: alarm)
+        scheduler.sceduleNotification()
     }
     
     func sortAlarms(alarms: [Alarm]) {
@@ -55,6 +74,7 @@ class AlarmsViewController: UIViewController {
     }
     
     // TODO: If there is time, this whole implementation is outdated. The new default way of presenting a page sheet is now the default.
+    // NOTE TO SELF: Using instruments (Like the tutorial) - Mesure the performance of this before and after.
     func presentAlarmViewController(alarm: Alarm?) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let popupViewController = storyboard.instantiateViewController(withIdentifier: "DetailNavigationController") as! UINavigationController
@@ -132,4 +152,19 @@ extension AlarmsViewController: AlarmViewControllerDelegate {
         editingIndexPath = nil
     }
     
+}
+
+// MARK:- UNUserNotificationCenterDelegate
+extension AlarmsViewController: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        
+        let userInfo = response.notification.request.content.userInfo
+
+        if let alarmID = userInfo["alarmID"] as? String {
+            print("Notification from ID: \(alarmID)")
+
+        }
+
+        completionHandler()
+    }
 }

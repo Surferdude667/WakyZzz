@@ -8,11 +8,12 @@
 
 import Foundation 
 
-class Alarm {
+class Alarm: NSObject {
 
     static let daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     
     var time = 0
+    let id = UUID().uuidString
     var repeatDays = [false, false, false, false, false, false, false]
     var enabled = true
     
