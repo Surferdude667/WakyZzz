@@ -63,8 +63,7 @@ class AlarmsViewController: UIViewController {
     }
     
     func scheduleAlarm(alarm: Alarm) {
-        let scheduler = AlarmScheduler(alarm: alarm)
-        scheduler.sceduleNotification()
+        _ = AlarmScheduler(alarm: alarm)
     }
     
     func sortAlarms(alarms: [Alarm]) {

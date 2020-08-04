@@ -10,36 +10,50 @@ import UIKit
 
 class AlarmScheduler {
     
+    let calendar = Calendar.current
     let center = UNUserNotificationCenter.current()
     let content = UNMutableNotificationContent()
-    let trigger: UNCalendarNotificationTrigger
-    let id: String
+    var trigger: UNCalendarNotificationTrigger?
+    var id: String
     
+    // TODO: This init is pretty much just a function. No need to do this...
     init(alarm: Alarm) {
         self.id = alarm.id
-        self.content.title = "Tile"
-        self.content.body = "Body"
+        
+        self.content.title = "Alarm! \(alarm.caption)"
+        self.content.body = "It's time to wake up! 🥳"
         self.content.sound = .defaultCritical
         self.content.userInfo = ["alarmID": alarm.id]
         
-        let calendar = Calendar.current
-        let components = calendar.dateComponents([.hour, .minute, .month, .year, .day], from: alarm.alarmDate!)
-        self.trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
-    }
-    
-    
-    func sceduleNotification() {
-        let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
-        
-        center.add(request) { (error) in
-            if error != nil {
-                print("Notification creation failed.")
+        if alarm.repeatDays.allSatisfy({$0 == false }) {
+            let components = calendar.dateComponents([.hour, .minute, .month, .year, .day], from: alarm.alarmDate!)
+            self.trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
+            sceduleNotification(id: id, trigger: trigger!)
+        } else {
+            for day in 0..<alarm.repeatDays.count {
+                if alarm.repeatDays[day] == true {
+                    let repeatingID = "\(id)_weekday\(day + 1)"
+                    
+                    var components = calendar.dateComponents([.hour, .minute, .weekday], from: alarm.alarmDate! as Date)
+                    components.weekday = day + 1
+                    
+                    self.trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
+                    sceduleNotification(id: repeatingID, trigger: trigger!)
+                }
             }
         }
     }
     
+    fileprivate func sceduleNotification(id: String, trigger: UNCalendarNotificationTrigger) {
+        let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
+        print("Adding alarm for: \(trigger.dateComponents) with notification id: \(id)")
+        center.add(request) { (error) in
+            if error != nil { print("Notification creation failed.") }
+        }
+    }
+    
     // TODO: Remove user defaults?
-    func cancelNotification(with id: String) {
+    static func cancelNotification(with id: String) {
         let notificationCenter = UNUserNotificationCenter.current()
         notificationCenter.removePendingNotificationRequests(withIdentifiers: [id])
     }

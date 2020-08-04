@@ -8,7 +8,7 @@
 
 import Foundation 
 
-class Alarm: NSObject {
+class Alarm {
 
     static let daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     
