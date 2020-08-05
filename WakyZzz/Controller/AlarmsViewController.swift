@@ -34,6 +34,7 @@ class AlarmsViewController: UIViewController {
     
     func deleteAlarm(at indexPath: IndexPath) {
         tableView.beginUpdates()
+        AlarmScheduler.cancelNotification(with: alarms[indexPath.row].id)
         alarms.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .automatic)
         tableView.endUpdates()
@@ -63,7 +64,8 @@ class AlarmsViewController: UIViewController {
     }
     
     func scheduleAlarm(alarm: Alarm) {
-        _ = AlarmScheduler(alarm: alarm)
+        let alarmScheduler = AlarmScheduler(alarm: alarm)
+        alarmScheduler.setupNotification()
     }
     
     func sortAlarms(alarms: [Alarm]) {
@@ -102,7 +104,7 @@ extension AlarmsViewController: UITableViewDataSource {
         cell.delegate = self
         
         if let alarm = alarm(at: indexPath) {
-            cell.populate(caption: alarm.caption, subcaption: alarm.repeating, enabled: alarm.enabled)
+            cell.populate(caption: alarm.caption, subcaption: alarm.repeating, enabled: alarm.enabled, alarm: alarm)
         }
         
         return cell
@@ -127,6 +129,18 @@ extension AlarmsViewController: AlarmCellDelegate {
         if let indexPath = tableView.indexPath(for: cell) {
             if let alarm = self.alarm(at: indexPath) {
                 print("Called at indexPath: \(indexPath): \(enabled)")
+                
+                if enabled == false {
+                    if let id = cell.alarm?.id {
+                        AlarmScheduler.cancelNotification(with: id)
+                    }
+                } else {
+                    if let alarm = cell.alarm {
+                        let scheduler = AlarmScheduler(alarm: alarm)
+                        scheduler.setupNotification()
+                    }
+                }
+                
                 alarm.enabled = enabled
             }
         }
@@ -139,8 +153,14 @@ extension AlarmsViewController: AlarmViewControllerDelegate {
     
     func alarmViewControllerDone(alarm: Alarm) {
         if let editingIndexPath = editingIndexPath {
+            
+            AlarmScheduler.cancelNotification(with: alarm.id)
+            let scheduler = AlarmScheduler(alarm: alarm)
+            scheduler.setupNotification()
+            
             tableView.reloadRows(at: [editingIndexPath], with: .automatic)
         } else {
+            print("Add alarm")
             addAlarm(alarm, at: IndexPath(row: alarms.count, section: 0))
         }
         editingIndexPath = nil
@@ -160,7 +180,7 @@ extension AlarmsViewController: UNUserNotificationCenterDelegate {
         let userInfo = response.notification.request.content.userInfo
 
         if let alarmID = userInfo["alarmID"] as? String {
-            print("Notification from ID: \(alarmID)")
+            print("Notification tapped from ID: \(alarmID)")
 
         }
 

@@ -19,20 +19,18 @@ class AlarmTableViewCell: UITableViewCell {
     @IBOutlet weak var enabledSwitch: UISwitch!
     
     var delegate: AlarmCellDelegate?
+    var alarm: Alarm?
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        configure()
-    }
-    
-    func configure() {
         
     }
     
-    func populate(caption: String, subcaption: String, enabled: Bool) {
+    func populate(caption: String, subcaption: String, enabled: Bool, alarm: Alarm) {
         captionLabel.text = caption
         subcaptionLabel.text = subcaption
         enabledSwitch.isOn = enabled
+        self.alarm = alarm
     }
     
     @IBAction func enabledStateChanged(_ sender: Any) {
