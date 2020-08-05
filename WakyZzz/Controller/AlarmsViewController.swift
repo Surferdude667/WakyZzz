@@ -11,8 +11,8 @@ import UIKit
 class AlarmsViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
-    let userNotificationCenter = UNUserNotificationCenter.current()
     
+    let userNotificationCenter = UNUserNotificationCenter.current()
     var alarms = [Alarm]()
     var editingIndexPath: IndexPath?
     
@@ -55,11 +55,8 @@ class AlarmsViewController: UIViewController {
     
     func requestNotificationAuthorization() {
         let authOptions = UNAuthorizationOptions.init(arrayLiteral: .alert, .badge, .sound)
-        
         self.userNotificationCenter.requestAuthorization(options: authOptions) { (success, error) in
-            if let error = error {
-                print("Error: ", error)
-            }
+            if let error = error { print("Error: ", error) }
         }
     }
     
@@ -72,6 +69,34 @@ class AlarmsViewController: UIViewController {
         let sorted = alarms.sorted(by: { $0.time < $1.time })
         self.alarms = sorted
         tableView.reloadData()
+    }
+    
+    func presentAlertController(from alarm: Alarm) {
+        let alert = UIAlertController(title: "Title", message: "Please Select an Option", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Snooze", style: .default, handler: { (_) in
+            
+            switch alarm.level {
+            case .defaultAlarm:
+                alarm.level = .high
+                // This is on the right track... just need to figure out how to postpone the notification...
+            case .high:
+                alarm.level = .evil
+            case .evil:
+                print("Evil alarm...")
+            }
+            
+            print("User click Snooze button")
+        }))
+
+        alert.addAction(UIAlertAction(title: "Turn off", style: .cancel, handler: { (_) in
+            print("User click Turn off button")
+        }))
+
+        self.present(alert, animated: true, completion: {
+            // Stop alarm sound
+            print("completion block")
+        })
     }
     
     // TODO: If there is time, this whole implementation is outdated. The new default way of presenting a page sheet is now the default.
@@ -128,7 +153,7 @@ extension AlarmsViewController: AlarmCellDelegate {
     func alarmCell(_ cell: AlarmTableViewCell, enabledChanged enabled: Bool) {
         if let indexPath = tableView.indexPath(for: cell) {
             if let alarm = self.alarm(at: indexPath) {
-                print("Called at indexPath: \(indexPath): \(enabled)")
+                alarm.enabled = enabled
                 
                 if enabled == false {
                     if let id = cell.alarm?.id {
@@ -140,8 +165,6 @@ extension AlarmsViewController: AlarmCellDelegate {
                         scheduler.setupNotification()
                     }
                 }
-                
-                alarm.enabled = enabled
             }
         }
     }
@@ -153,14 +176,11 @@ extension AlarmsViewController: AlarmViewControllerDelegate {
     
     func alarmViewControllerDone(alarm: Alarm) {
         if let editingIndexPath = editingIndexPath {
-            
             AlarmScheduler.cancelNotification(with: alarm.id)
             let scheduler = AlarmScheduler(alarm: alarm)
             scheduler.setupNotification()
-            
             tableView.reloadRows(at: [editingIndexPath], with: .automatic)
         } else {
-            print("Add alarm")
             addAlarm(alarm, at: IndexPath(row: alarms.count, section: 0))
         }
         editingIndexPath = nil
@@ -176,14 +196,35 @@ extension AlarmsViewController: AlarmViewControllerDelegate {
 // MARK:- UNUserNotificationCenterDelegate
 extension AlarmsViewController: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        
         let userInfo = response.notification.request.content.userInfo
-
         if let alarmID = userInfo["alarmID"] as? String {
-            print("Notification tapped from ID: \(alarmID)")
-
+            
+            func cleanID(of: String, from: String) -> String {
+                let cleanID = from.replacingOccurrences(of: "_\(of)", with: "")
+                return cleanID
+            }
+            
+            // DEFAULT ALARM
+            if alarmID.contains(AlarmLevel.defaultAlarm.rawValue) {
+                let id = cleanID(of: AlarmLevel.defaultAlarm.rawValue, from: alarmID)
+                let alarm = alarms.first(where: {$0.id == id})
+                if let alarm = alarm { presentAlertController(from: alarm) }
+            }
+            
+            // HIGH ALARM
+            if alarmID.contains(AlarmLevel.high.rawValue) {
+                let id = cleanID(of: AlarmLevel.high.rawValue, from: alarmID)
+                let alarm = alarms.first(where: {$0.id == id})
+                if let alarm = alarm { presentAlertController(from: alarm) }
+            }
+            
+            // EVIL ALARM
+            if alarmID.contains(AlarmLevel.evil.rawValue) {
+                let id = cleanID(of: AlarmLevel.evil.rawValue, from: alarmID)
+                let alarm = alarms.first(where: {$0.id == id})
+                if let alarm = alarm { presentAlertController(from: alarm) }
+            }
         }
-
         completionHandler()
     }
 }

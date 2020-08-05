@@ -24,8 +24,17 @@ class AlarmScheduler {
         
         self.content.title = "Alarm! \(alarm.caption)"
         self.content.body = "It's time to wake up! 🥳"
-        self.content.sound = .defaultCritical
-        self.content.userInfo = ["alarmID": alarm.id]
+        self.content.userInfo = ["alarmID": "\(alarm.id)_\(alarm.level.rawValue)"]
+        
+        // MARK: Sound
+        switch alarm.level {
+        case .defaultAlarm:
+            self.content.sound = .defaultCritical
+        case .high:
+            self.content.sound = .defaultCritical
+        case .evil:
+            self.content.sound = .defaultCritical
+        }
     }
     
     func setupNotification() {
@@ -50,7 +59,6 @@ class AlarmScheduler {
     
     fileprivate func sceduleNotification(id: String, trigger: UNCalendarNotificationTrigger) {
         let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
-        print("Adding alarm for: \(trigger.dateComponents) with notification id: \(id)")
         center.add(request) { (error) in
             if error != nil { print("Notification creation failed.") }
         }
@@ -65,11 +73,8 @@ class AlarmScheduler {
         ids.append(id)
         
         // Adds all possible repeating weekdays for removal.
-        for day in 1...7 {
-            ids.append("\(id)_weekday\(day)")
-        }
+        for day in 1...7 { ids.append("\(id)_weekday\(day)") }
         
-        print("Removed notification for IDs: \(ids)")
         notificationCenter.removePendingNotificationRequests(withIdentifiers: ids)
     }
 }

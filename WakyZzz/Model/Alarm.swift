@@ -16,6 +16,7 @@ class Alarm {
     let id = UUID().uuidString
     var repeatDays = [false, false, false, false, false, false, false]
     var enabled = true
+    var level: AlarmLevel = .defaultAlarm
     
     var alarmDate: Date? {
         let date = Date()
