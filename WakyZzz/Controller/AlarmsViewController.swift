@@ -71,31 +71,70 @@ class AlarmsViewController: UIViewController {
         tableView.reloadData()
     }
     
-    func presentAlertController(from alarm: Alarm) {
+    func presentSnoozeAlertController(from alarm: Alarm) {
         let alert = UIAlertController(title: "Title", message: "Please Select an Option", preferredStyle: .alert)
-        
         alert.addAction(UIAlertAction(title: "Snooze", style: .default, handler: { (_) in
+            AlarmScheduler.cancelNotification(with: alarm.id)
             
             switch alarm.level {
             case .defaultAlarm:
                 alarm.level = .high
-                // This is on the right track... just need to figure out how to postpone the notification...
             case .high:
                 alarm.level = .evil
             case .evil:
                 print("Evil alarm...")
             }
             
-            print("User click Snooze button")
+            alarm.incrimentAlarm()
+            let scheduler = AlarmScheduler(alarm: alarm)
+            scheduler.setupNotification()
         }))
-
+        
         alert.addAction(UIAlertAction(title: "Turn off", style: .cancel, handler: { (_) in
-            print("User click Turn off button")
+            alarm.returnToOriginalTime()
+            alarm.level = .defaultAlarm
+            // Stop alarm sound here....
+            
+            if alarm.repeatDays.allSatisfy({$0 == false }) {
+                alarm.enabled = false
+                self.tableView.reloadData()
+            }
         }))
-
+        
         self.present(alert, animated: true, completion: {
+            
+        })
+    }
+    
+    func presentEvilAlertController(from alarm: Alarm) {
+        let alert = UIAlertController(title: "EVIL ALARM", message: "Please Select an Option", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Call a freind", style: .default, handler: { (_) in
+            print("Call a freind")
             // Stop alarm sound
-            print("completion block")
+            // Setup notification
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Water your plants", style: .cancel, handler: { (_) in
+            print("Water plants..")
+            // Stop alarm sound
+            // Setup notification
+        }))
+        
+        self.present(alert, animated: true, completion: {
+            // Start alarm sound
+            alarm.returnToOriginalTime()
+            alarm.level = .defaultAlarm
+            
+            // Turn alarm off (Since Evil is the last point) Unless it's repeating,
+            if alarm.repeatDays.allSatisfy({$0 == false }) {
+                alarm.enabled = false
+                self.tableView.reloadData()
+            } else {
+                AlarmScheduler.cancelNotification(with: alarm.id)
+                let scheduler = AlarmScheduler(alarm: alarm)
+                scheduler.setupNotification()
+            }
         })
     }
     
@@ -123,7 +162,7 @@ extension AlarmsViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int { 1 }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { alarms.count }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "AlarmCell", for: indexPath) as! AlarmTableViewCell
         cell.delegate = self
@@ -208,21 +247,21 @@ extension AlarmsViewController: UNUserNotificationCenterDelegate {
             if alarmID.contains(AlarmLevel.defaultAlarm.rawValue) {
                 let id = cleanID(of: AlarmLevel.defaultAlarm.rawValue, from: alarmID)
                 let alarm = alarms.first(where: {$0.id == id})
-                if let alarm = alarm { presentAlertController(from: alarm) }
+                if let alarm = alarm { presentSnoozeAlertController(from: alarm) }
             }
             
             // HIGH ALARM
             if alarmID.contains(AlarmLevel.high.rawValue) {
                 let id = cleanID(of: AlarmLevel.high.rawValue, from: alarmID)
                 let alarm = alarms.first(where: {$0.id == id})
-                if let alarm = alarm { presentAlertController(from: alarm) }
+                if let alarm = alarm { presentSnoozeAlertController(from: alarm) }
             }
             
             // EVIL ALARM
             if alarmID.contains(AlarmLevel.evil.rawValue) {
                 let id = cleanID(of: AlarmLevel.evil.rawValue, from: alarmID)
                 let alarm = alarms.first(where: {$0.id == id})
-                if let alarm = alarm { presentAlertController(from: alarm) }
+                if let alarm = alarm { presentEvilAlertController(from: alarm) }
             }
         }
         completionHandler()

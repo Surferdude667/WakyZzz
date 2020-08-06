@@ -14,6 +14,7 @@ class Alarm {
     
     var time = 0
     let id = UUID().uuidString
+    let incrimentInterval = 1
     var repeatDays = [false, false, false, false, false, false, false]
     var enabled = true
     var level: AlarmLevel = .defaultAlarm
@@ -63,6 +64,32 @@ class Alarm {
         dateComponent.minute = 00
         
         return calender.date(from: dateComponent)!
+    }
+    
+    func incrimentAlarm() {
+        let calender = Calendar.current
+        let originalComponents = calender.dateComponents([.hour, .minute, .month, .year, .day, .second, .weekOfMonth], from: alarmDate! as Date)
+        var updatedComponents = originalComponents
+        updatedComponents.minute = updatedComponents.minute! + incrimentInterval
+        
+        setTime(date: calender.date(from: updatedComponents)!)
+    }
+    
+    func returnToOriginalTime() {
+        let calender = Calendar.current
+        let originalComponents = calender.dateComponents([.hour, .minute, .month, .year, .day, .second, .weekOfMonth], from: alarmDate! as Date)
+        var updatedComponents = originalComponents
+        
+        switch level {
+        case .defaultAlarm:
+            setTime(date: alarmDate!)
+        case .high:
+            updatedComponents.minute = updatedComponents.minute! - incrimentInterval
+            setTime(date: calender.date(from: updatedComponents)!)
+        case .evil:
+            updatedComponents.minute = updatedComponents.minute! - (incrimentInterval * 2)
+            setTime(date: calender.date(from: updatedComponents)!)
+        }
     }
     
 }
