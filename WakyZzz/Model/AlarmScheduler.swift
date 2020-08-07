@@ -60,7 +60,7 @@ class AlarmScheduler {
     fileprivate func sceduleNotification(id: String, trigger: UNCalendarNotificationTrigger) {
         let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
         center.add(request) { (error) in
-            if error != nil { print("Notification creation failed.") }
+            if error != nil { print("Alarm notification creation failed.") }
         }
     }
     

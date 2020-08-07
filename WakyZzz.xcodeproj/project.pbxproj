@@ -17,6 +17,7 @@
 		0424EB6F20BF0FAE00E15E46 /* AlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0424EB6E20BF0FAE00E15E46 /* AlarmViewController.swift */; };
 		0424EB7120C038AE00E15E46 /* sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0424EB7020C038AE00E15E46 /* sound.mp3 */; };
 		F622969224D1708100882BEF /* AlarmTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F622969124D1708100882BEF /* AlarmTests.swift */; };
+		F64856A724DD551400BBDEED /* KarmaScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64856A624DD551400BBDEED /* KarmaScheduler.swift */; };
 		F6528D2C24DB20A80044A769 /* AlarmLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6528D2B24DB20A80044A769 /* AlarmLevel.swift */; };
 		F68E8DB224D9A0CC00C79FA3 /* AlarmScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68E8DB124D9A0CC00C79FA3 /* AlarmScheduler.swift */; };
 		F6A6F08D24DC1B5B002AC98E /* AlarmSchedulerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A6F08C24DC1B5B002AC98E /* AlarmSchedulerTest.swift */; };
@@ -47,6 +48,7 @@
 		F622968724D1701E00882BEF /* WakyZzzTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WakyZzzTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F622968B24D1701E00882BEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F622969124D1708100882BEF /* AlarmTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmTests.swift; sourceTree = "<group>"; };
+		F64856A624DD551400BBDEED /* KarmaScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KarmaScheduler.swift; sourceTree = "<group>"; };
 		F6528D2B24DB20A80044A769 /* AlarmLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmLevel.swift; sourceTree = "<group>"; };
 		F68E8DB124D9A0CC00C79FA3 /* AlarmScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmScheduler.swift; sourceTree = "<group>"; };
 		F6A6F08C24DC1B5B002AC98E /* AlarmSchedulerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSchedulerTest.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 			children = (
 				0424EB6820BEF93F00E15E46 /* Alarm.swift */,
 				F68E8DB124D9A0CC00C79FA3 /* AlarmScheduler.swift */,
+				F64856A624DD551400BBDEED /* KarmaScheduler.swift */,
 				F6528D2B24DB20A80044A769 /* AlarmLevel.swift */,
 			);
 			path = Model;
@@ -262,6 +265,7 @@
 			files = (
 				0424EB5620BEF89000E15E46 /* AlarmsViewController.swift in Sources */,
 				F6528D2C24DB20A80044A769 /* AlarmLevel.swift in Sources */,
+				F64856A724DD551400BBDEED /* KarmaScheduler.swift in Sources */,
 				0424EB6D20BF022900E15E46 /* AlarmTableViewCell.swift in Sources */,
 				F68E8DB224D9A0CC00C79FA3 /* AlarmScheduler.swift in Sources */,
 				0424EB6F20BF0FAE00E15E46 /* AlarmViewController.swift in Sources */,

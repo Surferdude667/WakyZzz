@@ -15,6 +15,7 @@ class AlarmsViewController: UIViewController {
     let userNotificationCenter = UNUserNotificationCenter.current()
     var alarms = [Alarm]()
     var editingIndexPath: IndexPath?
+    let karma = ["Message a friend asking how they are doing.", "Connect with a family member by expressing a kind thought.", "Water your plants."]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,7 +73,8 @@ class AlarmsViewController: UIViewController {
     }
     
     func presentSnoozeAlertController(from alarm: Alarm) {
-        let alert = UIAlertController(title: "Title", message: "Please Select an Option", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Alarm! \(alarm.caption)", message: "It's time to wake up! 🥳", preferredStyle: .alert)
+        
         alert.addAction(UIAlertAction(title: "Snooze", style: .default, handler: { (_) in
             AlarmScheduler.cancelNotification(with: alarm.id)
             
@@ -82,7 +84,7 @@ class AlarmsViewController: UIViewController {
             case .high:
                 alarm.level = .evil
             case .evil:
-                print("Evil alarm...")
+                break
             }
             
             alarm.incrimentAlarm()
@@ -102,27 +104,27 @@ class AlarmsViewController: UIViewController {
         }))
         
         self.present(alert, animated: true, completion: {
-            
+            // Start alarm sound here...
         })
     }
     
     func presentEvilAlertController(from alarm: Alarm) {
-        let alert = UIAlertController(title: "EVIL ALARM", message: "Please Select an Option", preferredStyle: .alert)
+        let karmaMessage = karma.randomElement()
+        let alert = UIAlertController(title: "Balance the karma after snoozing!", message: karmaMessage, preferredStyle: .alert)
         
-        alert.addAction(UIAlertAction(title: "Call a freind", style: .default, handler: { (_) in
-            print("Call a freind")
+        alert.addAction(UIAlertAction(title: "Promish to do it now", style: .default, handler: { (_) in
+            print("Promish to do it now")
             // Stop alarm sound
-            // Setup notification
         }))
         
-        alert.addAction(UIAlertAction(title: "Water your plants", style: .cancel, handler: { (_) in
-            print("Water plants..")
+        alert.addAction(UIAlertAction(title: "Remind me later", style: .cancel, handler: { (_) in
+            let karmaScheduler = KarmaScheduler(date: alarm.alarmDate!, message: karmaMessage!)
+            karmaScheduler.setupNotification()
             // Stop alarm sound
-            // Setup notification
         }))
         
         self.present(alert, animated: true, completion: {
-            // Start alarm sound
+            // Start alarm sound here...
             alarm.returnToOriginalTime()
             alarm.level = .defaultAlarm
             
@@ -138,8 +140,6 @@ class AlarmsViewController: UIViewController {
         })
     }
     
-    // TODO: If there is time, this whole implementation is outdated. The new default way of presenting a page sheet is now the default.
-    // NOTE TO SELF: Using instruments (Like the tutorial) - Mesure the performance of this before and after.
     func presentAlarmViewController(alarm: Alarm?) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let popupViewController = storyboard.instantiateViewController(withIdentifier: "DetailNavigationController") as! UINavigationController

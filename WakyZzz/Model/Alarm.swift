@@ -66,6 +66,7 @@ class Alarm {
         return calender.date(from: dateComponent)!
     }
     
+    // There will be a probelm on minute 59 - If time fix it.
     func incrimentAlarm() {
         let calender = Calendar.current
         let originalComponents = calender.dateComponents([.hour, .minute, .month, .year, .day, .second, .weekOfMonth], from: alarmDate! as Date)
