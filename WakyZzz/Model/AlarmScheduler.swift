@@ -29,11 +29,11 @@ class AlarmScheduler {
         // MARK: Sound
         switch alarm.level {
         case .defaultAlarm:
-            self.content.sound = .defaultCritical
+            self.content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "alarm_low.mp3"))
         case .high:
-            self.content.sound = .defaultCritical
+            self.content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "alarm_high.mp3"))
         case .evil:
-            self.content.sound = .defaultCritical
+            self.content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "alarm_evil.mp3"))
         }
     }
     

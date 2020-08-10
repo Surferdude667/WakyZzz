@@ -16,6 +16,7 @@ class AlarmsViewController: UIViewController {
     var alarms = [Alarm]()
     var editingIndexPath: IndexPath?
     let karma = ["Message a friend asking how they are doing.", "Connect with a family member by expressing a kind thought.", "Water your plants."]
+    let alarmPlayer = AlarmPlayer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,12 +91,13 @@ class AlarmsViewController: UIViewController {
             alarm.incrimentAlarm()
             let scheduler = AlarmScheduler(alarm: alarm)
             scheduler.setupNotification()
+            self.alarmPlayer.stopSound()
         }))
         
         alert.addAction(UIAlertAction(title: "Turn off", style: .cancel, handler: { (_) in
             alarm.returnToOriginalTime()
             alarm.level = .defaultAlarm
-            // Stop alarm sound here....
+            self.alarmPlayer.stopSound()
             
             if alarm.repeatDays.allSatisfy({$0 == false }) {
                 alarm.enabled = false
@@ -104,7 +106,14 @@ class AlarmsViewController: UIViewController {
         }))
         
         self.present(alert, animated: true, completion: {
-            // Start alarm sound here...
+            switch alarm.level {
+            case .defaultAlarm:
+                self.alarmPlayer.playSound(.low)
+            case .high:
+                self.alarmPlayer.playSound(.high)
+            default:
+                break
+            }
         })
     }
     
@@ -113,18 +122,17 @@ class AlarmsViewController: UIViewController {
         let alert = UIAlertController(title: "Balance the karma after snoozing!", message: karmaMessage, preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: "Promish to do it now", style: .default, handler: { (_) in
-            print("Promish to do it now")
-            // Stop alarm sound
+            self.alarmPlayer.stopSound()
         }))
         
         alert.addAction(UIAlertAction(title: "Remind me later", style: .cancel, handler: { (_) in
             let karmaScheduler = KarmaScheduler(date: alarm.alarmDate!, message: karmaMessage!)
             karmaScheduler.setupNotification()
-            // Stop alarm sound
+            self.alarmPlayer.stopSound()
         }))
         
         self.present(alert, animated: true, completion: {
-            // Start alarm sound here...
+            self.alarmPlayer.playSound(.evil)
             alarm.returnToOriginalTime()
             alarm.level = .defaultAlarm
             
