@@ -111,7 +111,7 @@ class AlarmsViewController: UIViewController {
                 self.alarmPlayer.playSound(.low)
             case .high:
                 self.alarmPlayer.playSound(.high)
-            default:
+            case .evil:
                 break
             }
         })
@@ -242,6 +242,11 @@ extension AlarmsViewController: AlarmViewControllerDelegate {
 
 // MARK:- UNUserNotificationCenterDelegate
 extension AlarmsViewController: UNUserNotificationCenterDelegate {
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.alert, .badge, .sound])
+    }
+    
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
         if let alarmID = userInfo["alarmID"] as? String {
