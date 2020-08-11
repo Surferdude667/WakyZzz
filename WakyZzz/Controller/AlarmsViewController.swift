@@ -243,39 +243,48 @@ extension AlarmsViewController: AlarmViewControllerDelegate {
 // MARK:- UNUserNotificationCenterDelegate
 extension AlarmsViewController: UNUserNotificationCenterDelegate {
     
+    func handleNotification(alarmID: String) {
+        func cleanID(of: String, from: String) -> String {
+            let cleanID = from.replacingOccurrences(of: "_\(of)", with: "")
+            return cleanID
+        }
+        
+        // DEFAULT ALARM
+        if alarmID.contains(AlarmLevel.defaultAlarm.rawValue) {
+            let id = cleanID(of: AlarmLevel.defaultAlarm.rawValue, from: alarmID)
+            let alarm = alarms.first(where: {$0.id == id})
+            if let alarm = alarm { presentSnoozeAlertController(from: alarm) }
+        }
+        
+        // HIGH ALARM
+        if alarmID.contains(AlarmLevel.high.rawValue) {
+            let id = cleanID(of: AlarmLevel.high.rawValue, from: alarmID)
+            let alarm = alarms.first(where: {$0.id == id})
+            if let alarm = alarm { presentSnoozeAlertController(from: alarm) }
+        }
+        
+        // EVIL ALARM
+        if alarmID.contains(AlarmLevel.evil.rawValue) {
+            let id = cleanID(of: AlarmLevel.evil.rawValue, from: alarmID)
+            let alarm = alarms.first(where: {$0.id == id})
+            if let alarm = alarm { presentEvilAlertController(from: alarm) }
+        }
+    }
+    
+    
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([.alert, .badge, .sound])
+        let userInfo = notification.request.content.userInfo
+        if let alarmID = userInfo["alarmID"] as? String {
+            handleNotification(alarmID: alarmID)
+        }
+        
+        return
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
         if let alarmID = userInfo["alarmID"] as? String {
-            
-            func cleanID(of: String, from: String) -> String {
-                let cleanID = from.replacingOccurrences(of: "_\(of)", with: "")
-                return cleanID
-            }
-            
-            // DEFAULT ALARM
-            if alarmID.contains(AlarmLevel.defaultAlarm.rawValue) {
-                let id = cleanID(of: AlarmLevel.defaultAlarm.rawValue, from: alarmID)
-                let alarm = alarms.first(where: {$0.id == id})
-                if let alarm = alarm { presentSnoozeAlertController(from: alarm) }
-            }
-            
-            // HIGH ALARM
-            if alarmID.contains(AlarmLevel.high.rawValue) {
-                let id = cleanID(of: AlarmLevel.high.rawValue, from: alarmID)
-                let alarm = alarms.first(where: {$0.id == id})
-                if let alarm = alarm { presentSnoozeAlertController(from: alarm) }
-            }
-            
-            // EVIL ALARM
-            if alarmID.contains(AlarmLevel.evil.rawValue) {
-                let id = cleanID(of: AlarmLevel.evil.rawValue, from: alarmID)
-                let alarm = alarms.first(where: {$0.id == id})
-                if let alarm = alarm { presentEvilAlertController(from: alarm) }
-            }
+            handleNotification(alarmID: alarmID)
         }
         completionHandler()
     }

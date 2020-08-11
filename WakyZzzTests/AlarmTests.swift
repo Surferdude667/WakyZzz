@@ -57,8 +57,6 @@ class AlarmTests: XCTestCase {
             
             XCTAssert(h == 8)
             XCTAssert(m == 0)
-        } else {
-            XCTFail()
         }
         
         // Testing if the alarm time changed.
@@ -76,19 +74,65 @@ class AlarmTests: XCTestCase {
             
             XCTAssert(h == 10)
             XCTAssert(m == 55)
-        } else {
-            XCTFail()
         }
     }
     
-    // TODO: This test makes no sense, test if delegate function works instead. Probabely in another file.
-    func testAlarmOnOff() {
+    func testIncrimenter() {
         let alarm = Alarm()
+        let date = Date()
+        let calender = Calendar.current
         
-        // Testing if default is true
-        XCTAssert(alarm.enabled == true)
+        var components = calender.dateComponents([.hour, .minute, .month, .year, .day, .second, .weekOfMonth], from: date as Date)
+        components.hour = 10
+        components.minute = 1
+        alarm.setTime(date: calender.date(from: components)!)
         
-        alarm.enabled = false
-        XCTAssert(alarm.enabled == false)
+        let originalTime = calender.dateComponents([.hour, .minute], from: alarm.alarmDate!)
+        
+        // Confirm original time is set
+        XCTAssert(originalTime.hour == 10)
+        XCTAssert(originalTime.minute == 1)
+        
+        // Confirming the time is incrimented
+        alarm.incrimentAlarm()
+        let newTime = calender.dateComponents([.hour, .minute], from: alarm.alarmDate!)
+        XCTAssert(newTime.hour == 10)
+        XCTAssert(newTime.minute == 2)
+    }
+    
+    func testReturnToOrginalTime() {
+        let alarm = Alarm()
+        let date = Date()
+        let calender = Calendar.current
+        
+        var components = calender.dateComponents([.hour, .minute, .month, .year, .day, .second, .weekOfMonth], from: date as Date)
+        components.hour = 10
+        components.minute = 1
+        alarm.setTime(date: calender.date(from: components)!)
+        
+        let originalTime = calender.dateComponents([.hour, .minute], from: alarm.alarmDate!)
+        
+        // Confirm original time is set
+        XCTAssert(originalTime.hour == 10)
+        XCTAssert(originalTime.minute == 1)
+        
+        // Confirming the time is incrimented
+        alarm.incrimentAlarm()
+        let newHighTime = calender.dateComponents([.hour, .minute], from: alarm.alarmDate!)
+        XCTAssert(newHighTime.hour == 10)
+        XCTAssert(newHighTime.minute == 2)
+        
+        // Confirming time is doubble incrimented
+        alarm.incrimentAlarm()
+        let newEvilTime = calender.dateComponents([.hour, .minute], from: alarm.alarmDate!)
+        XCTAssert(newEvilTime.hour == 10)
+        XCTAssert(newEvilTime.minute == 3)
+        alarm.level = .evil
+        
+        // Confirming the time is set back to original
+        alarm.returnToOriginalTime()
+        let backFromEvil = calender.dateComponents([.hour, .minute], from: alarm.alarmDate!)
+        XCTAssert(backFromEvil.hour == 10)
+        XCTAssert(backFromEvil.minute == 1)
     }
 }

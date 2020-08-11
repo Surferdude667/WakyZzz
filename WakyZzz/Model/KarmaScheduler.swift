@@ -15,6 +15,7 @@ class KarmaScheduler {
     let center = UNUserNotificationCenter.current()
     let content = UNMutableNotificationContent()
     var trigger: UNCalendarNotificationTrigger?
+    let id = UUID().uuidString
     
     init(date: Date, message: String) {
         var components = calendar.dateComponents([.hour, .minute, .month, .year, .day], from: date)
@@ -30,7 +31,7 @@ class KarmaScheduler {
     }
     
     func setupNotification() {
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
         center.add(request) { (error) in
             if error != nil { print("Karma notification creation failed.") }
         }

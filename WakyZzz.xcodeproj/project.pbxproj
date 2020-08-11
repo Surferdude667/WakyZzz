@@ -19,11 +19,13 @@
 		F64856A724DD551400BBDEED /* KarmaScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64856A624DD551400BBDEED /* KarmaScheduler.swift */; };
 		F6528D2C24DB20A80044A769 /* AlarmLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6528D2B24DB20A80044A769 /* AlarmLevel.swift */; };
 		F68E8DB224D9A0CC00C79FA3 /* AlarmScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68E8DB124D9A0CC00C79FA3 /* AlarmScheduler.swift */; };
-		F6A6F08D24DC1B5B002AC98E /* AlarmSchedulerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A6F08C24DC1B5B002AC98E /* AlarmSchedulerTest.swift */; };
+		F6A6F08D24DC1B5B002AC98E /* AlarmSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6A6F08C24DC1B5B002AC98E /* AlarmSchedulerTests.swift */; };
 		F6C1558E24E1639500BFFC2C /* alarm_high.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F6C1558B24E1639500BFFC2C /* alarm_high.mp3 */; };
 		F6C1558F24E1639500BFFC2C /* alarm_low.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F6C1558C24E1639500BFFC2C /* alarm_low.mp3 */; };
 		F6C1559324E1678D00BFFC2C /* alarm_evil.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F6C1559224E1678D00BFFC2C /* alarm_evil.mp3 */; };
 		F6C1559524E169F700BFFC2C /* AlarmPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C1559424E169F700BFFC2C /* AlarmPlayer.swift */; };
+		F6C1559724E2A78500BFFC2C /* AlarmPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C1559624E2A78500BFFC2C /* AlarmPlayerTests.swift */; };
+		F6C1559924E2BF4100BFFC2C /* KarmaSchedulerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6C1559824E2BF4100BFFC2C /* KarmaSchedulerTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,11 +55,13 @@
 		F64856A624DD551400BBDEED /* KarmaScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KarmaScheduler.swift; sourceTree = "<group>"; };
 		F6528D2B24DB20A80044A769 /* AlarmLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmLevel.swift; sourceTree = "<group>"; };
 		F68E8DB124D9A0CC00C79FA3 /* AlarmScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmScheduler.swift; sourceTree = "<group>"; };
-		F6A6F08C24DC1B5B002AC98E /* AlarmSchedulerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSchedulerTest.swift; sourceTree = "<group>"; };
+		F6A6F08C24DC1B5B002AC98E /* AlarmSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSchedulerTests.swift; sourceTree = "<group>"; };
 		F6C1558B24E1639500BFFC2C /* alarm_high.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = alarm_high.mp3; sourceTree = "<group>"; };
 		F6C1558C24E1639500BFFC2C /* alarm_low.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = alarm_low.mp3; sourceTree = "<group>"; };
 		F6C1559224E1678D00BFFC2C /* alarm_evil.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = alarm_evil.mp3; sourceTree = "<group>"; };
 		F6C1559424E169F700BFFC2C /* AlarmPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmPlayer.swift; sourceTree = "<group>"; };
+		F6C1559624E2A78500BFFC2C /* AlarmPlayerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmPlayerTests.swift; sourceTree = "<group>"; };
+		F6C1559824E2BF4100BFFC2C /* KarmaSchedulerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KarmaSchedulerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,8 +121,10 @@
 			isa = PBXGroup;
 			children = (
 				F622969124D1708100882BEF /* AlarmTests.swift */,
+				F6A6F08C24DC1B5B002AC98E /* AlarmSchedulerTests.swift */,
+				F6C1559824E2BF4100BFFC2C /* KarmaSchedulerTests.swift */,
+				F6C1559624E2A78500BFFC2C /* AlarmPlayerTests.swift */,
 				F622968B24D1701E00882BEF /* Info.plist */,
-				F6A6F08C24DC1B5B002AC98E /* AlarmSchedulerTest.swift */,
 			);
 			path = WakyZzzTests;
 			sourceTree = "<group>";
@@ -290,8 +296,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6C1559724E2A78500BFFC2C /* AlarmPlayerTests.swift in Sources */,
 				F622969224D1708100882BEF /* AlarmTests.swift in Sources */,
-				F6A6F08D24DC1B5B002AC98E /* AlarmSchedulerTest.swift in Sources */,
+				F6C1559924E2BF4100BFFC2C /* KarmaSchedulerTests.swift in Sources */,
+				F6A6F08D24DC1B5B002AC98E /* AlarmSchedulerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
